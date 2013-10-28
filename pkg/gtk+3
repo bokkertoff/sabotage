@@ -1,0 +1,19 @@
+[mirrors]
+http://ftp.gnome.org/pub/gnome/sources/gtk+/3.4/gtk+-3.4.2.tar.xz
+
+[main]
+filesize=12839736
+sha512=b9adf9d40db013acd23b355244cac3ca19e8d688425fb2ae99b375ad84d7e49064ed4a3660a221bfdb82164b9f46fd1eae23855cee611389d75d1383971325d4
+
+[deps]
+libx11
+pango
+gdk-pixbuf
+
+[build]
+#patch -p1 < "$K/some.patch" || exit 1
+CFLAGS=-D_GNU_SOURCE ./configure -C --prefix="$butch_prefix" \
+	--enable-broadway-backend -enable-x11-backend \
+	--disable-wayland-backend || exit 1
+make -j$MAKE_THREADS || exit 1
+make DESTDIR="$butch_install_dir" install || exit 1
